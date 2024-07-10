@@ -15,8 +15,10 @@ import {
 import { generateClient } from 'aws-amplify/api'
 import { quotesQueryName } from '@/src/graphql/queries'
 import { GraphQLResult } from '@aws-amplify/api-graphql'
-// interface for DynamoDb Object
+import { Amplify } from 'aws-amplify'
+import config from '../../src/amplifyconfiguration.json'
 
+// interface for DynamoDb Object
 interface UpdateQuoteInfoData {
 	id: string
 	queryName: string
@@ -39,8 +41,6 @@ function isGraphQLResultForQuotesQueryName(
 	)
 }
 
-import { Amplify } from 'aws-amplify'
-import config from '../../src/amplifyconfiguration.json'
 
 Amplify.configure(config)
 
@@ -58,10 +58,8 @@ export default function Home() {
 				},
 			})
 
-			console.log('Response: ', updateQoute)
-
 			if (!isGraphQLResultForQuotesQueryName(updateQoute)) {
-				throw new Error('Invalid response frm client')
+				throw new Error('Invalid response from client')
 			}
 
 			if (!updateQoute.data) {
